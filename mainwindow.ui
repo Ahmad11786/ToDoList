@@ -51,6 +51,13 @@
        <widget class="QListWidget" name="taskList"/>
       </item>
       <item>
+       <widget class="QLabel" name="totalTasksLabel">
+        <property name="text">
+         <string>Total: 0</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="remainingTasksLabel">
         <property name="text">
          <string>Remaining: 0</string>
@@ -65,16 +72,22 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="totalTasksLabel">
+       <widget class="QPushButton" name="deleteButton">
         <property name="text">
-         <string>Total: 0</string>
+         <string>Delet Selected Task</string>
+        </property>
+        <property name="icon">
+         <iconset theme="QIcon::ThemeIcon::EditDelete"/>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="deleteButton">
+       <widget class="QPushButton" name="pushButton">
         <property name="text">
-         <string>Delete Selected Task</string>
+         <string>Edit Selected Task</string>
+        </property>
+        <property name="icon">
+         <iconset theme="QIcon::ThemeIcon::MailMessageNew"/>
         </property>
        </widget>
       </item>
