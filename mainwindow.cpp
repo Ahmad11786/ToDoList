@@ -1,7 +1,7 @@
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QString>
@@ -11,7 +11,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QCoreApplication>
-
+#include <QLineEdit>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -93,11 +93,9 @@ QPushButton#addButton {
 
 
 
-    connect(ui->addButton, &QPushButton::clicked,
-            this, &MainWindow::addTask);
+    connect(ui->addButton, &QPushButton::clicked,this, &MainWindow::addTask);
 
-    connect(ui->deleteButton, &QPushButton::clicked,
-            this, &MainWindow::deleteTask);
+    connect(ui->deleteButton, &QPushButton::clicked, this, &MainWindow::deleteTask);
 
     // Load saved tasks when the application starts.
     loadTasks();
@@ -314,3 +312,75 @@ void MainWindow::loadTasks()
 
     file.close();
 }
+
+
+
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    // Get the selected task
+    QListWidgetItem *item = ui->taskList->currentItem();
+
+    // Check whether a task is selected
+    if (item == nullptr)
+    {
+        QMessageBox::warning(
+            this,
+            "No Task Selected",
+            "Please select a task to edit!"
+            );
+
+        return;
+    }
+
+    // Store the old task text
+    QString oldTask = item->text();
+
+    bool ok = false;
+
+    // Ask the user for the updated task
+    QString newTask = QInputDialog::getText(
+        this,
+        "Edit Task",
+        "Enter the updated task:",
+        QLineEdit::Normal,
+        oldTask,
+        &ok
+        );
+
+    // Stop if the user clicks Cancel
+    if (!ok)
+    {
+        return;
+    }
+
+    // Remove extra spaces
+    newTask = newTask.trimmed();
+
+    // Validate the new task
+    if (newTask.isEmpty())
+    {
+        QMessageBox::warning(
+            this,
+            "Invalid Task",
+            "Task cannot be empty!"
+            );
+
+        return;
+    }
+
+    // Update the task text
+    item->setText(newTask);
+
+    // Preserve the completed-task formatting
+    QFont font = item->font();
+    font.setStrikeOut(item->checkState() == Qt::Checked);
+    item->setFont(font);
+
+    // Save changes and update counters
+    saveTasks();
+    updateTaskCount();
+}
+
+
