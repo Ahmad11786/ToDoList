@@ -26,6 +26,8 @@ private slots:
     void saveTasks();
     void loadTasks();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
